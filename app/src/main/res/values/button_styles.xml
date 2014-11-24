@@ -105,10 +105,8 @@
 
 	<!-- Facebook -->
 	<style name="Button.Facebook">
-		<!--<item name="btn_bevel_lvl">1</item>-->
 		<item name="btn_is_solid">false</item>
 		<item name="btn_use_border">false</item>
-		<!--<item name="btn_is_solid">true</item>-->
 		<item name="btn_is_glassy">true</item>
 		<item name="btn_gradient_angle">TOP_BOTTOM</item>
 		<item name="btn_use_pressed_layer">false</item>
@@ -118,20 +116,17 @@
 		<item name="btn_right">@color/f_emboss_right_1</item>
 		<item name="btn_bottom">@color/f_emboss_bottom_1</item>
 
-		<!--Additions-->
-		<item name="btn_solid">@color/f_button_1</item>
-		<item name="btn_solid_p">@color/f_button_1_p</item>
-		<item name="btn_solid_s">@color/f_button_1_p</item>
-		<!---->
-
-		<item name="btn_gradient_start">@color/f_button_1</item>
-		<item name="btn_gradient_end">@color/f_button_2</item>
-
 		<item name="btn_top_2">@color/f_emboss_top_2</item>
 		<item name="btn_left_2">@color/f_emboss_left_2</item>
 		<item name="btn_right_2">@color/f_emboss_right_2</item>
 		<item name="btn_bottom_2">@color/f_emboss_bottom_2</item>
 
+		<item name="btn_gradient_start">@color/f_button_1</item>
+		<item name="btn_gradient_end">@color/f_button_2</item>
+
+		<item name="btn_solid">@color/f_button_1</item>
+		<item name="btn_solid_p">@color/f_button_1_p</item>
+		<item name="btn_solid_s">@color/f_button_1_p</item>
 
 
 		<item name="color">@color/f_button_1</item>

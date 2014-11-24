@@ -53,9 +53,6 @@ public class ButtonDrawable extends StateListDrawable {
 	int disabledAlpha;
 	int enabledAlpha;
 
-//	LayerDrawable enabledDrawable;
-//	LayerDrawable pressedDrawable;
-
 	float[] outerRect;
 	RectF bevelRect;
 	RectF glassyRect;
@@ -97,7 +94,6 @@ public class ButtonDrawable extends StateListDrawable {
 	int bevelLvl;
 	int bevelInset;
 	int radius;
-	private int borderRadius;
 	int bevelSize;
 
 	/* Padding */
@@ -115,7 +111,6 @@ public class ButtonDrawable extends StateListDrawable {
 	boolean boundsInit;
 	Rect clipBounds;
 
-//	public Rect clipRect;
 	ColorFilter currentFilter;
 	int currentAlpha;
 	RectF buttonRect;
@@ -155,7 +150,6 @@ public class ButtonDrawable extends StateListDrawable {
 		bevelLvl = 1;
 		isSolid = true;
 		radius = DEFAULT_RADIUS;
-		borderRadius = DEFAULT_RADIUS + 4;
 
 		disabledAlpha = 100;
 		enabledAlpha = 0xFF;
