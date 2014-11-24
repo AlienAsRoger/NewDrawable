@@ -87,10 +87,11 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	@Override
 	void init(Resources resources) {
-		bevelSize = resources.getDimensionPixelSize(R.dimen.default_bevel_size);
+		super.init(resources);
+//		bevelSize = resources.getDimensionPixelSize(R.dimen.default_bevel_size);
 
 
-		clipRect = new Rect();
+//		clipRect = new Rect();
 
 		lightLinePaint = new Paint(); // light line
 		lightLinePaint.setColor(colorTop);
@@ -135,7 +136,6 @@ public class RectButtonDrawable extends ButtonDrawable {
 		}
 
 		edgeOffset = bevelSize * 2;
-
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		canvas.getClipBounds(clipRect);
+//		canvas.getClipBounds(clipRect);
 		if (!boundsInit) {
 			initBounds(canvas);
 		}
@@ -166,9 +166,13 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 		lightLinePaint.setColorFilter(currentFilter);
 		darkLinePaint.setColorFilter(currentFilter);
+		buttonPaint.setColorFilter(currentFilter);
 
 		canvas.drawRect(lightRect, lightLinePaint);
 		canvas.drawRect(darkRect, darkLinePaint);
+
+		// draw top layer of button
+		canvas.drawRoundRect(buttonRect, radius, radius, buttonPaint);
 	}
 
 	private void initBounds(Canvas canvas) {
@@ -186,6 +190,8 @@ public class RectButtonDrawable extends ButtonDrawable {
 		int showLeft = edgeOffset / 3;
 		int showRight = width - edgeOffset / 4;
 		int showBottom = height - edgeOffset / 4;
+
+		buttonRect.set(noLeft, noTop, noRight, noBottom);
 
 		switch (rectPosition) {
 			case TOP_LEFT:
@@ -238,7 +244,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 			// show only side dark borders
 			case SIDE_LEFT:
-				darkRect.set(showLeft, noTop, showRight, noBottom);
+				darkRect.set(showLeft, noTop, noRight, noBottom);
 				lightRect.set(noLeft, noTop, noRight, noBottom);
 				break;
 			case SIDE_MIDDLE:

@@ -40,11 +40,11 @@ public class ButtonDrawable extends StateListDrawable {
 
 	// used to toggle outside of this view
 
-//	public static final int[] STATE_PRESSED = new int[]{android.R.attr.state_pressed};
-//	public static final int[] STATE_ENABLED = new int[]{android.R.attr.state_enabled};
-//	public static final int[] STATE_SELECTED = new int[]{android.R.attr.state_enabled, android.R.attr.state_checked};
-//	public static final int[] STATE_CHECKED = new int[]{android.R.attr.state_checked};
-//	public static final int[] STATE_DISABLED = new int[]{-android.R.attr.state_enabled};
+	public static final int[] STATE_PRESSED = new int[]{android.R.attr.state_pressed};
+	public static final int[] STATE_ENABLED = new int[]{android.R.attr.state_enabled};
+	public static final int[] STATE_SELECTED = new int[]{android.R.attr.state_enabled, android.R.attr.state_checked};
+	public static final int[] STATE_CHECKED = new int[]{android.R.attr.state_checked};
+	public static final int[] STATE_DISABLED = new int[]{-android.R.attr.state_enabled};
 
 	ColorFilter enabledFilter;
 	ColorFilter pressedFilter;
@@ -115,7 +115,7 @@ public class ButtonDrawable extends StateListDrawable {
 	boolean boundsInit;
 	Rect clipBounds;
 
-	public Rect clipRect;
+//	public Rect clipRect;
 	ColorFilter currentFilter;
 	int currentAlpha;
 	RectF buttonRect;
@@ -147,7 +147,7 @@ public class ButtonDrawable extends StateListDrawable {
 	}
 
 	private void setDefaults() {
-		clipRect = new Rect();
+//		clipRect = new Rect();
 
 		clipBounds = new Rect();
 
@@ -159,19 +159,6 @@ public class ButtonDrawable extends StateListDrawable {
 
 		disabledAlpha = 100;
 		enabledAlpha = 0xFF;
-//		insetOne = new InsetInfo();
-//		insetOne.top = new int[]{0, 0, 0, 1};
-//		insetOne.left = new int[]{1, 0, 0, 1};
-//		insetOne.right = new int[]{1, 1, 0, 1};
-//		insetOne.bottom = new int[]{1, 1, 1, 0};
-//		insetOne.button = new int[]{0, 0, 0, 0};
-//
-//		insetTwo = new InsetInfo();
-//		insetTwo.top = new int[]{0, 0, 0, 2};
-//		insetTwo.left = new int[]{2, 0, 0, 2};
-//		insetTwo.right = new int[]{2, 2, 0, 2};
-//		insetTwo.bottom = new int[]{2, 2, 2, 0};
-//		insetTwo.button = new int[]{2, 2, 2, 2};
 	}
 
 	void init(Resources resources) {
@@ -231,7 +218,7 @@ public class ButtonDrawable extends StateListDrawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		canvas.getClipBounds(clipRect);
+//		canvas.getClipBounds(clipRect);
 		if (!initialized) {
 			iniLayers(canvas);
 		}
