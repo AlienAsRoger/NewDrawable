@@ -22,8 +22,8 @@
 	<color name="glassy_header_default">#FFe8e7e6</color>
 	<color name="glassy_header_pressed">#FFb6b5b4</color>
 
-	<color name="rect_button_overlay_p_dark">#66000000</color>
-	<color name="rect_button_overlay_p">#66000000</color>
+	<color name="rect_button_overlay_p_dark">#44000000</color>
+	<color name="rect_button_overlay_p">#44000000</color>
 	<color name="rect_button_overlay_c">#33000000</color>
 	<!--Good!-->
 
