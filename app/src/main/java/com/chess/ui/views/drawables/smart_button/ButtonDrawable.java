@@ -1,22 +1,15 @@
-package com.chess.views.drawables.smart_button;
+package com.chess.ui.views.drawables.smart_button;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.graphics.drawable.shapes.RectShape;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.os.Build;
 import android.util.AttributeSet;
-import com.chess.R;
-import com.chess.utilities.AppUtils;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.roger.newdrawable.R;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,6 +20,7 @@ import java.util.List;
 public class ButtonDrawable extends StateListDrawable {
 
 	public static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+	public static final boolean JELLYBEAN_MR1_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
 
 	static final int DEFAULT_RADIUS = 4;
 	static final int DEFAULT_BEVEL_INSET = 2;
@@ -46,11 +40,11 @@ public class ButtonDrawable extends StateListDrawable {
 
 	// used to toggle outside of this view
 
-	public static final int[] STATE_PRESSED = new int[]{android.R.attr.state_pressed};
-	public static final int[] STATE_ENABLED = new int[]{android.R.attr.state_enabled};
-	public static final int[] STATE_SELECTED = new int[]{android.R.attr.state_enabled, android.R.attr.state_checked};
-	public static final int[] STATE_CHECKED = new int[]{android.R.attr.state_checked};
-	public static final int[] STATE_DISABLED = new int[]{-android.R.attr.state_enabled};
+//	public static final int[] STATE_PRESSED = new int[]{android.R.attr.state_pressed};
+//	public static final int[] STATE_ENABLED = new int[]{android.R.attr.state_enabled};
+//	public static final int[] STATE_SELECTED = new int[]{android.R.attr.state_enabled, android.R.attr.state_checked};
+//	public static final int[] STATE_CHECKED = new int[]{android.R.attr.state_checked};
+//	public static final int[] STATE_DISABLED = new int[]{-android.R.attr.state_enabled};
 
 	ColorFilter enabledFilter;
 	ColorFilter pressedFilter;
@@ -59,14 +53,12 @@ public class ButtonDrawable extends StateListDrawable {
 	int disabledAlpha;
 	int enabledAlpha;
 
-	LayerDrawable enabledDrawable;
-	LayerDrawable pressedDrawable;
+//	LayerDrawable enabledDrawable;
+//	LayerDrawable pressedDrawable;
 
 	float[] outerRect;
 	RectF bevelRect;
 	RectF glassyRect;
-
-	int buttonIndex;
 
 	/* Button parameter */
 	int colorOuterBorder;
@@ -118,11 +110,24 @@ public class ButtonDrawable extends StateListDrawable {
 
 	/* state & other values */
 	private boolean initialized;
-	private static final int glassyBorderIndex = 0;
 	int glassyBevelSize;
 
-	InsetInfo insetOne;
-	InsetInfo insetTwo;
+	boolean boundsInit;
+	Rect clipBounds;
+
+	public Rect clipRect;
+	ColorFilter currentFilter;
+	int currentAlpha;
+	RectF buttonRect;
+	Paint buttonPaint;
+	RectF leftRect;
+	RectF topRect;
+	RectF rightRect;
+	RectF bottomRect;
+	Paint leftLinePaint;
+	Paint topLinePaint;
+	Paint rightLinePaint;
+	Paint bottomLinePaint;
 
 	/**
 	 * Use for init ButtonDrawableBuilder
@@ -142,6 +147,10 @@ public class ButtonDrawable extends StateListDrawable {
 	}
 
 	private void setDefaults() {
+		clipRect = new Rect();
+
+		clipBounds = new Rect();
+
 		// defaults
 		bevelLvl = 1;
 		isSolid = true;
@@ -150,20 +159,19 @@ public class ButtonDrawable extends StateListDrawable {
 
 		disabledAlpha = 100;
 		enabledAlpha = 0xFF;
-		insetOne = new InsetInfo();
-		insetOne.top = new int[]{0, 0, 0, 1};
-		insetOne.left = new int[]{1, 0, 0, 1};
-		insetOne.right = new int[]{1, 1, 0, 1};
-		insetOne.bottom = new int[]{1, 1, 1, 0};
-//		insetOne.button = new int[]{1, 1, 1, 1};
-		insetOne.button = new int[]{0, 0, 0, 0};
-
-		insetTwo = new InsetInfo();
-		insetTwo.top = new int[]{0, 0, 0, 2};
-		insetTwo.left = new int[]{2, 0, 0, 2};
-		insetTwo.right = new int[]{2, 2, 0, 2};
-		insetTwo.bottom = new int[]{2, 2, 2, 0};
-		insetTwo.button = new int[]{2, 2, 2, 2};
+//		insetOne = new InsetInfo();
+//		insetOne.top = new int[]{0, 0, 0, 1};
+//		insetOne.left = new int[]{1, 0, 0, 1};
+//		insetOne.right = new int[]{1, 1, 0, 1};
+//		insetOne.bottom = new int[]{1, 1, 1, 0};
+//		insetOne.button = new int[]{0, 0, 0, 0};
+//
+//		insetTwo = new InsetInfo();
+//		insetTwo.top = new int[]{0, 0, 0, 2};
+//		insetTwo.left = new int[]{2, 0, 0, 2};
+//		insetTwo.right = new int[]{2, 2, 0, 2};
+//		insetTwo.bottom = new int[]{2, 2, 2, 0};
+//		insetTwo.button = new int[]{2, 2, 2, 2};
 	}
 
 	void init(Resources resources) {
@@ -175,6 +183,32 @@ public class ButtonDrawable extends StateListDrawable {
 
 		bevelSize = resources.getDimensionPixelSize(R.dimen.default_bevel_size);
 		bevelRect = new RectF(bevelSize, bevelSize, bevelSize, bevelSize);
+
+		leftRect = new RectF();
+		topRect = new RectF();
+		rightRect = new RectF();
+		bottomRect = new RectF();
+		buttonRect = new RectF();
+
+		leftLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		leftLinePaint.setStyle(Paint.Style.STROKE);
+		leftLinePaint.setColor(colorLeft);
+
+		topLinePaint= new Paint(Paint.ANTI_ALIAS_FLAG);
+		topLinePaint.setStyle(Paint.Style.STROKE);
+		topLinePaint.setColor(colorTop);
+
+		rightLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		rightLinePaint.setStyle(Paint.Style.STROKE);
+		rightLinePaint.setColor(colorRight);
+
+		bottomLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		bottomLinePaint.setStyle(Paint.Style.STROKE);
+		bottomLinePaint.setColor(colorBottom);
+
+		buttonPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		buttonPaint.setStyle(Paint.Style.FILL);
+		buttonPaint.setColor(colorSolid);
 
 		if (isGlassy) {
 			glassyBevelSize = resources.getDimensionPixelSize(R.dimen.default_bevel_glassy_size);
@@ -193,165 +227,76 @@ public class ButtonDrawable extends StateListDrawable {
 		int checkedOverlay = resources.getColor(R.color.default_button_overlay_c);
 		checkedFilter = new PorterDuffColorFilter(checkedOverlay, PorterDuff.Mode.MULTIPLY);
 
-//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.SCREEN); // bad edges
-//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.SRC_IN); //  make transparent  - dark - bad
-//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.SRC_OUT); // bad edges
-//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.DST_IN); // make light transparent
-//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.DARKEN);  // bad edges
-//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.MULTIPLY); // make transparent  - dark - bad
-//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.OVERLAY); // bad edges
-//		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.XOR);  // bad edges
-
-		List<LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
-		List<LayerInfo> pressedLayers = new ArrayList<LayerInfo>();
-
-		if (useBorder) { // outer border
-			int strokeSize = resources.getDimensionPixelSize(R.dimen.default_stroke_width);
-
-			RectF stroke = new RectF(strokeSize, strokeSize, strokeSize, strokeSize);
-			float[] outerRectBorder = new float[]{borderRadius, borderRadius, borderRadius, borderRadius,
-					borderRadius, borderRadius, borderRadius, borderRadius};
-
-			RectShape rectShape = new RoundRectShapeFixed(outerRectBorder, stroke, outerRectBorder);
-			ShapeDrawable shapeDrawable = new ShapeDrawable(rectShape);
-			shapeDrawable.getPaint().setColor(colorOuterBorder);
-
-			enabledLayers.add(new LayerInfo(shapeDrawable, 0, 0, 0, 0));
-			if (usePressedLayer) {
-				pressedLayers.add(new LayerInfo(shapeDrawable, 0, 0, 0, 0));
-			}
-		}
-
-		createDefaultState(enabledLayers);
-
-		if (usePressedLayer) { // by default we apply color filter and alpha for different states
-			createPressedState(pressedLayers);
-		}
-
-		// TODO add ability to use selected custom layer
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
+		canvas.getClipBounds(clipRect);
 		if (!initialized) {
 			iniLayers(canvas);
 		}
-		super.draw(canvas);
+
+		if (!boundsInit) {
+			initBounds(canvas);
+		}
+
+		topLinePaint.setColorFilter(currentFilter);
+		bottomLinePaint.setColorFilter(currentFilter);
+		leftLinePaint.setColorFilter(currentFilter);
+		rightLinePaint.setColorFilter(currentFilter);
+		buttonPaint.setColorFilter(currentFilter);
+
+//		topLinePaint.setAlpha(currentAlpha);   // makes white and black colors
+//		buttonPaint.setAlpha(currentAlpha);
+
+		// draw bevel lines
+		canvas.drawRoundRect(topRect, radius, radius, topLinePaint);
+		canvas.drawRoundRect(bottomRect, radius, radius, bottomLinePaint);
+		canvas.drawRoundRect(leftRect, radius, radius, leftLinePaint);
+		canvas.drawRoundRect(rightRect, radius, radius, rightLinePaint);
+		// draw top layer of button
+		canvas.drawRoundRect(buttonRect, radius, radius, buttonPaint);
+	}
+
+	private void initBounds(Canvas canvas) {
+		canvas.getClipBounds(clipBounds);
+		int width = clipBounds.width();
+		int height = clipBounds.height();
+
+		int noTop = bevelLvl;
+		int noLeft = bevelLvl;
+		int noRight = width;
+		int noBottom = height;
+
+		int showTop = 0;
+		int showLeft = 0;
+		int showRight = width - bevelLvl;
+		int showBottom = height - bevelLvl;
+
+		leftRect.set(showLeft, noTop, noRight, noBottom);
+		topRect.set(noLeft, showTop, noRight, noBottom);
+		rightRect.set(noLeft, noTop, showRight, noBottom);
+		bottomRect.set(noLeft, noTop, noRight, showBottom);
+		buttonRect.set(noLeft, noTop, noRight, noBottom);
+
+		boundsInit = true;
 	}
 
 	void iniLayers(Canvas canvas) {
 		int width = canvas.getWidth();
 		int height = canvas.getHeight();
 		if (!isSolid) {
-			((ShapeDrawable) enabledDrawable.getDrawable(buttonIndex)).getPaint().setShader(
-					makeLinear(width, height, colorGradientStart, colorGradientCenter, colorGradientEnd));
+			buttonPaint.setShader(makeLinear(width, height, colorGradientStart, colorGradientCenter, colorGradientEnd));
 			if (usePressedLayer) {
-				((ShapeDrawable) pressedDrawable.getDrawable(buttonIndex)).getPaint().setShader(
-						makeLinear(width, height, colorGradientStartP, colorGradientCenterP, colorGradientEndP));
+				buttonPaint.setShader(makeLinear(width, height, colorGradientStartP, colorGradientCenterP, colorGradientEndP));
 			}
 		}
 
 		if (isGlassy && useBorder) {
-			((ShapeDrawable) enabledDrawable.getDrawable(glassyBorderIndex)).getPaint().setShader(
-					makeLinear(width, height, colorGradientStart, colorGradientCenter, colorGradientEnd));
+			buttonPaint.setShader(makeLinear(width, height, colorGradientStart, colorGradientCenter, colorGradientEnd));
 		}
 
 		initialized = true;
-	}
-
-	void createDefaultState(List<LayerInfo> enabledLayers) {   // TODO it can be improved!
-		if (isGlassy) { // create thin gradient border to mimic bevel // TODO make every layer gradient? to reduce total number of layers...
-			ShapeDrawable drawable = new ShapeDrawable(new RoundRectShape(outerRect, glassyRect, outerRect));
-			enabledLayers.add(new LayerInfo(drawable, bevelInset + insetOne.top[0], bevelInset + insetOne.top[1],
-					bevelInset + insetOne.top[2], bevelInset + insetOne.top[3]));
-		} else {
-			createLayer(colorTop, insetOne.top, enabledLayers);
-			createLayer(colorBottom, insetOne.bottom, enabledLayers); // order is important
-			createLayer(colorLeft, insetOne.left, enabledLayers);
-			createLayer(colorRight, insetOne.right, enabledLayers);
-
-			if (bevelLvl == 2) {
-				createLayer(colorTop2, insetTwo.top, enabledLayers);
-				createLayer(colorBottom2, insetTwo.bottom, enabledLayers);
-				createLayer(colorLeft2, insetTwo.left, enabledLayers);
-				createLayer(colorRight2, insetTwo.right, enabledLayers);
-			}
-		}
-
-		int[] button = bevelLvl == 1 ? insetOne.button : insetTwo.button;
-		int color = isSolid ? colorSolid : TRANSPARENT;
-		createLayer(color, button, enabledLayers, true);
-
-		int levelCnt = enabledLayers.size();
-		buttonIndex = levelCnt - 1;
-
-		Drawable[] enabledDrawables = new Drawable[levelCnt];  // TODO improve that mess
-		for (int i = 0; i < levelCnt; i++) {
-			LayerInfo layerInfo = enabledLayers.get(i);
-			enabledDrawables[i] = layerInfo.shapeDrawable;
-		}
-		enabledDrawable = new LayerDrawable(enabledDrawables);
-		for (int i = 0; i < levelCnt; i++) { // start from 2nd level, first is shadow
-			LayerInfo layer = enabledLayers.get(i);
-			enabledDrawable.setLayerInset(i, layer.leftInSet, layer.topInSet, layer.rightInSet, layer.bottomInSet);
-		}
-
-		addState(STATE_ENABLED, enabledDrawable);
-		addState(STATE_DISABLED, enabledDrawable);
-
-		setState(STATE_ENABLED);
-	}
-
-	void createPressedState(List<LayerInfo> pressedLayers) {
-		createLayer(colorTopP, insetOne.top, pressedLayers);
-		createLayer(colorBottomP, insetOne.bottom, pressedLayers);
-		createLayer(colorLeftP, insetOne.left, pressedLayers);
-		createLayer(colorRightP, insetOne.right, pressedLayers);
-
-		if (bevelLvl == 2) {
-			createLayer(colorTop2P, insetTwo.top, pressedLayers);
-			createLayer(colorBottom2P, insetTwo.bottom, pressedLayers);
-			createLayer(colorLeft2P, insetTwo.left, pressedLayers);
-			createLayer(colorRight2P, insetTwo.right, pressedLayers);
-		}
-
-		int[] button = bevelLvl == 1 ? insetOne.button : insetTwo.button;
-		int color = isSolid ? colorSolidP : TRANSPARENT;
-		createLayer(color, button, pressedLayers, true);
-
-		int levelCnt = pressedLayers.size();
-		Drawable[] pressedDrawables = new Drawable[levelCnt]; // TODO improve that mess
-		for (int i = 0; i < levelCnt; i++) {
-			LayerInfo layerInfo = pressedLayers.get(i);
-			pressedDrawables[i] = layerInfo.shapeDrawable;
-		}
-		pressedDrawable = new LayerDrawable(pressedDrawables);
-		for (int i = 0; i < levelCnt; i++) { // start from 2nd level, first is shadow
-			LayerInfo layer = pressedLayers.get(i);
-			pressedDrawable.setLayerInset(i, layer.leftInSet, layer.topInSet, layer.rightInSet, layer.bottomInSet);
-		}
-
-		addState(STATE_PRESSED, pressedDrawable);
-	}
-
-	void createLayer(int color, int[] inSet, List<LayerInfo> layers) {
-		if (color != TRANSPARENT) {
-			createLayer(color, inSet, layers, false);
-		}
-	}
-
-	void createLayer(int color, int[] inSet, List<LayerInfo> layers, boolean isButton) {
-		ShapeDrawable drawable;
-		if (isButton) {
-			drawable = new ShapeDrawable(new RoundRectShapeFixed(outerRect, null, null));
-			setPaddingToShape(drawable);
-		} else {
-			drawable = new ShapeDrawable(new RoundRectShapeFixed(outerRect, bevelRect, outerRect)); // TODO use one single layer to draw bevels
-		}
-		if (color != TRANSPARENT) {  // TODO adjust proper logic for transparent solid use
-			drawable.getPaint().setColor(color);
-		}
-		layers.add(new LayerInfo(drawable, bevelInset + inSet[0], bevelInset + inSet[1], bevelInset + inSet[2], bevelInset + inSet[3]));
 	}
 
 	/**
@@ -445,8 +390,8 @@ public class ButtonDrawable extends StateListDrawable {
 	}
 
 	@Override
-	public boolean isStateful() {
-		return true;
+	public int getOpacity() {
+		return 0;
 	}
 
 	@Override
@@ -468,56 +413,45 @@ public class ButtonDrawable extends StateListDrawable {
 			}
 		}
 
+
 		Drawable drawable = this;
-//		if (enabled && pressed) {
-//			drawable.mutate().setColorFilter(pressedFilter);
-//			drawable.mutate().setAlpha(enabledAlpha);
-//		} else if (enabled && selected) {
-//			drawable.mutate().setColorFilter(selectedFilter);
-//			drawable.mutate().setAlpha(enabledAlpha);
-//		} else if (enabled && checked) {
-//			drawable.mutate().setColorFilter(checkedFilter);
-//			drawable.mutate().setAlpha(enabledAlpha);
-//		} else if (!enabled) {
-//			drawable.mutate().setAlpha(disabledAlpha);
-//		} else {
-//			drawable.mutate().setColorFilter(enabledFilter);
-//			drawable.mutate().setAlpha(enabledAlpha);
-//		}
+		currentFilter = null;
+		currentAlpha = 0;
 		if (enabled && pressed) {
+
 			drawable.setColorFilter(pressedFilter);
 			drawable.setAlpha(enabledAlpha);
+			currentFilter = pressedFilter;
+			currentAlpha = enabledAlpha;
 		} else if (enabled && selected) {
 			drawable.setColorFilter(selectedFilter);
 			drawable.setAlpha(enabledAlpha);
+			currentFilter = selectedFilter;
+			currentAlpha = enabledAlpha;
 		} else if (enabled && checked) {
 			drawable.setColorFilter(checkedFilter);
 			drawable.setAlpha(enabledAlpha);
+			currentFilter = checkedFilter;
+			currentAlpha = enabledAlpha;
 		} else if (!enabled) {
 			drawable.setAlpha(disabledAlpha);
+			currentAlpha = disabledAlpha;
 		} else {
 			drawable.setColorFilter(enabledFilter);
 			drawable.setAlpha(enabledAlpha);
+			currentFilter = enabledFilter;
+			currentAlpha = enabledAlpha;
 		}
 
 		if (!isClickable) { // override all states to default
 			drawable.mutate().setColorFilter(enabledFilter);
 			drawable.mutate().setAlpha(enabledAlpha);
+			currentFilter = enabledFilter;
+			currentAlpha = enabledAlpha;
 		}
 
-		if (!HONEYCOMB_PLUS_API) {
-			invalidateSelf();// need to update for pre-HC
-		}
+		invalidateSelf();
 
-//		invalidateDrawable(enabledDrawable);  // seems to non needed, reduce overdraw
-//		if (usePressedLayer) {
-//			invalidateDrawable(pressedDrawable);
-//		}
-
-		return super.onStateChange(states);
-	}
-
-	boolean callSuperOnStateChange(int[] states) {
 		return super.onStateChange(states);
 	}
 
@@ -594,7 +528,7 @@ public class ButtonDrawable extends StateListDrawable {
 		int PADDING_BOTTOM_INDEX = 4;
 
 		int[] defaultPadding;
-		if (AppUtils.JELLYBEAN_MR1_PLUS_API) {
+		if (JELLYBEAN_MR1_PLUS_API) {
 			defaultPadding = new int[]{android.R.attr.padding, android.R.attr.paddingLeft, android.R.attr.paddingTop,
 					android.R.attr.paddingRight, android.R.attr.paddingBottom, android.R.attr.paddingStart, android.R.attr.paddingEnd
 			};
@@ -614,33 +548,6 @@ public class ButtonDrawable extends StateListDrawable {
 		bottomPadding = array.getDimensionPixelSize(PADDING_BOTTOM_INDEX, DEF_VALUE);
 
 		array.recycle();
-	}
-
-	class LayerInfo {
-		int leftInSet;
-		int topInSet;
-		int rightInSet;
-		int bottomInSet;
-		ShapeDrawable shapeDrawable;
-
-		public LayerInfo(ShapeDrawable shapeDrawable, int leftInSet, int topInSet, int rightInSet, int bottomInSet) {
-			this.shapeDrawable = shapeDrawable;
-			this.leftInSet = leftInSet;
-			this.topInSet = topInSet;
-			this.rightInSet = rightInSet;
-			this.bottomInSet = bottomInSet;
-		}
-	}
-
-	/**
-	 * Help class to set insets for every item in layer list drawable
-	 */
-	class InsetInfo {
-		int[] top;
-		int[] left;
-		int[] right;
-		int[] bottom;
-		int[] button;
 	}
 
 }

@@ -1,0 +1,254 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	>
+
+	<com.chess.widgets.LinLayout
+		android:id="@+id/top"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:visibility="visible"
+		>
+
+		<com.chess.widgets.RoboButton
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+			android:text="@string/test"
+			style="@style/Rect.Top.Left"
+			/>
+
+		<com.chess.widgets.RoboButton
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+			android:text="@string/test"
+			style="@style/Rect.Top.Middle"
+			/>
+
+		<com.chess.widgets.RoboButton
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+			android:text="@string/test"
+			style="@style/Rect.Top.Right"
+			/>
+
+	</com.chess.widgets.LinLayout>
+
+	<com.chess.widgets.LinLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:visibility="visible"
+		android:layout_below="@+id/top"
+		android:orientation="vertical"
+		>
+		<com.chess.widgets.LinLayout
+			android:layout_width="match_parent"
+			android:layout_height="48dp"
+			android:visibility="visible"
+			style="@style/ListItem"
+			/>
+
+		<com.chess.widgets.LinLayout
+			android:layout_width="match_parent"
+			android:layout_height="48dp"
+			android:visibility="visible"
+			style="@style/ListItem"
+			/>
+
+		<com.chess.widgets.LinLayout
+			android:layout_width="match_parent"
+			android:layout_height="48dp"
+			android:visibility="visible"
+			style="@style/ListItem"
+			/>
+
+	</com.chess.widgets.LinLayout>
+
+	<com.chess.widgets.LinLayout
+		android:id="@+id/notations"
+		android:layout_above="@+id/tabs"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+
+		android:visibility="visible"
+		>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			>
+			<com.chess.widgets.RoboButton
+				android:layout_width="0dp"
+				android:layout_height="48dp"
+				android:layout_weight="1"
+				android:text="@string/test"
+				style="@style/RoundRadioButton.Left"
+				android:layout_margin="16dp"
+				/>
+
+			<com.chess.widgets.RoboButton
+				android:layout_width="0dp"
+				android:layout_height="48dp"
+				android:layout_weight="1"
+				android:text="@string/test"
+				style="@style/RoundRadioButton.Middle"
+				android:layout_margin="16dp"
+				/>
+			<com.chess.widgets.RoboButton
+				android:layout_width="0dp"
+				android:layout_height="48dp"
+				android:layout_weight="1"
+				android:text="@string/test"
+				style="@style/RoundRadioButton.Right"
+				android:layout_margin="16dp"
+				/>
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			>
+
+			<com.chess.widgets.RoboButton
+				android:layout_width="0dp"
+				android:layout_height="48dp"
+				android:layout_weight="1"
+				android:text="black 65"
+				style="@style/Button.Black.65"
+				android:layout_margin="16dp"
+				/>
+
+			<com.chess.widgets.RoboButton
+				android:layout_width="0dp"
+				android:layout_height="48dp"
+				android:layout_weight="1"
+				android:text="upgrade"
+				style="@style/Button.Upgrade"
+				android:layout_margin="16dp"
+				/>
+
+
+		</LinearLayout>
+
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			>
+
+			<com.chess.widgets.RoboButton
+				android:layout_width="0dp"
+				android:layout_height="48dp"
+				android:layout_weight="1"
+				android:text="@string/test"
+				style="@style/Button.OrangeNoBorder"
+				android:layout_margin="16dp"
+				/>
+
+			<com.chess.widgets.RoboButton
+				android:layout_width="0dp"
+				android:layout_height="48dp"
+				android:layout_weight="1"
+				android:text="facebook"
+				style="@style/Button.Facebook"
+				android:layout_margin="16dp"
+				/>
+			<com.chess.widgets.RoboButton
+				android:layout_width="0dp"
+				android:layout_height="48dp"
+				android:layout_weight="1"
+				android:text="@string/test"
+				style="@style/Button.Glassy"
+				android:layout_margin="16dp"
+				/>
+		</LinearLayout>
+
+
+	</com.chess.widgets.LinLayout>
+
+	<!--Tabs-->
+	<LinearLayout
+		android:id="@+id/tabs"
+		android:layout_above="@+id/controls"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		>
+		<com.chess.widgets.RoboButton
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+			android:text="@string/test"
+			style="@style/Rect.Tab.Left"
+			/>
+
+		<com.chess.widgets.RoboButton
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+			android:text="@string/test"
+			style="@style/Rect.Tab.Middle"
+			/>
+
+		<com.chess.widgets.RoboButton
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+			android:text="@string/test"
+			style="@style/Rect.Tab.Right"
+			/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/controls"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_alignParentBottom="true"
+		android:visibility="visible"
+		>
+		<com.chess.widgets.RoboButton
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+
+			android:text="@string/test"
+			style="@style/Rect.Bottom.Left"
+			/>
+
+		<com.chess.widgets.RoboButton
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+
+			android:text="@string/test"
+			style="@style/Rect.Bottom.Middle"
+			/>
+
+		<com.chess.widgets.RoboButton
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+			android:text="@string/test"
+			style="@style/Rect.Bottom.Middle"
+			/>
+
+		<com.chess.widgets.RoboButton
+			android:layout_width="0dp"
+			android:layout_height="48dp"
+			android:layout_weight="1"
+			android:text="@string/test"
+			style="@style/Rect.Bottom.Right"
+			/>
+
+	</LinearLayout>
+
+</RelativeLayout>

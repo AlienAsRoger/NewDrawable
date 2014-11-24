@@ -1,4 +1,4 @@
-package com.chess.views.drawables.smart_button;
+package com.chess.ui.views.drawables.smart_button;
 
 /**
  * Created with IntelliJ IDEA.

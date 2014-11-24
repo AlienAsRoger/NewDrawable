@@ -1,14 +1,16 @@
-package com.chess.views.drawables.smart_button;
+package com.chess.ui.views.drawables.smart_button;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
-import com.chess.R;
-import com.chess.utilities.AppUtils;
+import com.example.roger.newdrawable.R;
 
-import static com.chess.ui.views.drawables.smart_button.ButtonDrawable.*;
+import static com.chess.ui.views.drawables.smart_button.ButtonDrawable.DEFAULT_BEVEL_INSET;
+import static com.chess.ui.views.drawables.smart_button.ButtonDrawable.LEFT_RIGHT;
+import static com.chess.ui.views.drawables.smart_button.ButtonDrawable.TL_BR;
 import static com.chess.ui.views.drawables.smart_button.RectButtonDrawable.*;
 
 /**
@@ -18,6 +20,7 @@ import static com.chess.ui.views.drawables.smart_button.RectButtonDrawable.*;
  * Time: 17:17
  */
 public class ButtonDrawableBuilder {
+	public static final boolean JELLYBEAN_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
 
 	private static ButtonDrawable setDefaults(Context context) {
 		Resources resources = context.getResources();
@@ -125,7 +128,7 @@ public class ButtonDrawableBuilder {
 
 	public static void setBackgroundToView(View view, int styleId) {
 		ButtonDrawable buttonDrawable = createDrawable(view.getContext(), styleId);
-		if (AppUtils.JELLYBEAN_PLUS_API) {
+		if (JELLYBEAN_PLUS_API) {
 			view.setBackground(buttonDrawable);
 		} else {
 			view.setBackgroundDrawable(buttonDrawable);
@@ -153,21 +156,21 @@ public class ButtonDrawableBuilder {
 
 			if (isRect) {
 				RectButtonDrawable background = new RectButtonDrawable(context, attrs);
-				if (AppUtils.JELLYBEAN_PLUS_API) {
+				if (JELLYBEAN_PLUS_API) {
 					view.setBackground(background);
 				} else {
 					view.setBackgroundDrawable(background);
 				}
 			} else if (isGlassy) {
 				ButtonGlassyDrawable background = new ButtonGlassyDrawable(context, attrs);
-				if (AppUtils.JELLYBEAN_PLUS_API) {
+				if (JELLYBEAN_PLUS_API) {
 					view.setBackground(background);
 				} else {
 					view.setBackgroundDrawable(background);
 				}
 			} else {
 				ButtonDrawable background = new ButtonDrawable(context, attrs);
-				if (AppUtils.JELLYBEAN_PLUS_API) {
+				if (JELLYBEAN_PLUS_API) {
 					view.setBackground(background);
 				} else {
 					view.setBackgroundDrawable(background);
@@ -808,8 +811,6 @@ public class ButtonDrawableBuilder {
 		if (buttonDrawable.colorTop == 0) {
 			buttonDrawable.colorTop = resources.getColor(R.color.transparent_button_border_left);
 		}
-//		buttonDrawable.colorLeft = resources.getColor(R.color.transparent_button_border_left);
-//		buttonDrawable.colorRight = resources.getColor(R.color.transparent_button_border_right);
 		buttonDrawable.colorBottom = resources.getColor(R.color.transparent_button_border_bottom);
 		// Button colors
 		buttonDrawable.colorSolid = resources.getColor(buttonColor);

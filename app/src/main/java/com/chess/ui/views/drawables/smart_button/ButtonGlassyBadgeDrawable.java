@@ -1,4 +1,4 @@
-package com.chess.views.drawables.smart_button;
+package com.chess.ui.views.drawables.smart_button;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -8,19 +8,20 @@ import com.chess.ui.views.drawables.ChatBadgeDrawable;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 29.09.13
- * Time: 20:56
+ * Date: 23.11.13
+ * Time: 19:18
  */
-public class RectButtonBadgeDrawable extends RectButtonDrawable implements BadgeButtonFace {
+public class ButtonGlassyBadgeDrawable extends ButtonGlassyDrawable implements BadgeButtonFace {
 
 	private ChatBadgeDrawable chatBadgeDrawable;
 	private Resources resources;
 	private boolean initialized;
 	private int sideOffset;
+	private float density;
 	private int badgeOffset;
 	private String badgeValue;
 
-	public RectButtonBadgeDrawable() {
+	public ButtonGlassyBadgeDrawable() {
 	}
 
 	@Override
@@ -28,7 +29,7 @@ public class RectButtonBadgeDrawable extends RectButtonDrawable implements Badge
 		super.init(resources);
 		this.resources = resources;
 
-		float density = resources.getDisplayMetrics().density;
+		density = resources.getDisplayMetrics().density;
 		sideOffset = (int) (3.5f * density);
 		badgeOffset = (int) (ChatBadgeDrawable.BADGE_SIZE * density) / 2;
 	}
