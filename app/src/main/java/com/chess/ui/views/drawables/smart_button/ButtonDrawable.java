@@ -11,6 +11,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import com.example.roger.newdrawable.R;
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -53,8 +54,6 @@ public class ButtonDrawable extends StateListDrawable {
 	int disabledAlpha;
 	int enabledAlpha;
 
-	float[] outerRect;
-	RectF bevelRect;
 	RectF glassyRect;
 
 	/* Button parameter */
@@ -142,8 +141,6 @@ public class ButtonDrawable extends StateListDrawable {
 	}
 
 	private void setDefaults() {
-//		clipRect = new Rect();
-
 		clipBounds = new Rect();
 
 		// defaults
@@ -156,14 +153,8 @@ public class ButtonDrawable extends StateListDrawable {
 	}
 
 	void init(Resources resources) {
-		if (radius > 0) {
-			outerRect = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
-		} else {
-			outerRect = null; // solve optimization problem because it uses mPath.addRect instead of mPath.addRoundRect
-		}
 
 		bevelSize = resources.getDimensionPixelSize(R.dimen.default_bevel_size);
-		bevelRect = new RectF(bevelSize, bevelSize, bevelSize, bevelSize);
 
 		leftRect = new RectF();
 		topRect = new RectF();

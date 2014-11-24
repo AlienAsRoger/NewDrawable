@@ -458,6 +458,33 @@
 		<item name="btn_rect_pos">tabRight</item>
 	</style>
 
+	<!-- ============= Grey(diagrams ===================== -->
+
+	<style name="Rect.Grey">
+		<item name="android:textSize">@dimen/tab_button_text_size</item>
+		<!--light-->
+		<item name="btn_top">@color/transparent</item>
+		<!--dark-->
+		<item name="btn_bottom">@color/white</item>
+		<!--<item name="btn_bottom">@color/blue_button</item>-->
+		<item name="btn_solid">@color/default_button_overlay_p</item>
+		<!--<item name="android:textColor">@color/text_tabs_color_selector</item>-->
+
+	</style>
+
+	<style name="Rect.Grey.Left">
+		<item name="btn_rect_pos">rectGreyLeft</item>
+	</style>
+
+	<style name="Rect.Grey.Middle">
+		<item name="btn_rect_pos">rectGreyMiddle</item>
+	</style>
+
+	<style name="Rect.Grey.Right">
+		<item name="btn_rect_pos">rectGreyRight</item>
+	</style>
+
+
 	<!-- ============= Notations for Tablets ===================== -->
 
 	<style name="Rect.Tablet">

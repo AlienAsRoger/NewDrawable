@@ -122,6 +122,10 @@
 			<enum name="silverRight" value="23" />
 
 			<enum name="listItemWhite" value="24" />
+
+			<enum name="rectGreyLeft" value="25" />
+			<enum name="rectGreyMiddle" value="26" />
+			<enum name="rectGreyRight" value="27" />
 		</attr>
 
 	</declare-styleable>

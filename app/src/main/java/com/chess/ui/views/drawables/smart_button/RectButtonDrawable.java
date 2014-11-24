@@ -7,6 +7,7 @@ import android.graphics.*;
 import android.util.AttributeSet;
 import com.example.roger.newdrawable.R;
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -48,6 +49,10 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	static final int LIST_ITEM_WHITE = 24; // used for monotone dividers on content screens
 
+	static final int RECT_GREY_LEFT = 25;
+	static final int RECT_GREY_MIDDLE = 26;
+	static final int RECT_GREY_RIGHT = 27;
+
 	int rectPosition = DEF_VALUE;
 
 	private int edgeOffset;
@@ -88,10 +93,6 @@ public class RectButtonDrawable extends ButtonDrawable {
 	@Override
 	void init(Resources resources) {
 		super.init(resources);
-//		bevelSize = resources.getDimensionPixelSize(R.dimen.default_bevel_size);
-
-
-//		clipRect = new Rect();
 
 		lightLinePaint = new Paint(); // light line
 		lightLinePaint.setColor(colorTop);
@@ -105,14 +106,6 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 		lightRect = new Rect();
 		darkRect = new Rect();
-
-		if (radius > 0) {
-			outerRect = new float[]{radius, radius, radius, radius, radius, radius, radius, radius};
-		} else {
-			outerRect = null;
-		}
-
-		bevelRect = new RectF(bevelSize, bevelSize, bevelSize, bevelSize);
 
 		// set color filters for different drawable state
 		int pressedOverlay = resources.getColor(R.color.rect_button_overlay_p);
@@ -151,7 +144,6 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-//		canvas.getClipBounds(clipRect);
 		if (!boundsInit) {
 			initBounds(canvas);
 		}
@@ -189,9 +181,11 @@ public class RectButtonDrawable extends ButtonDrawable {
 		int showTop2 = edgeOffset - edgeOffset / 4;
 		int showLeft = edgeOffset / 3;
 		int showRight = width - edgeOffset / 4;
+		int showRight2 = width - edgeOffset / 2;
 		int showBottom = height - edgeOffset / 4;
 
 		buttonRect.set(noLeft, noTop, noRight, noBottom);
+
 
 		switch (rectPosition) {
 			case TOP_LEFT:
@@ -270,15 +264,34 @@ public class RectButtonDrawable extends ButtonDrawable {
 				lightRect.set(showLeft, showTop2, noRight, noBottom);
 				break;
 
-//			case SILVER_LEFT:   // seems that not used anywhere
-//				lightRect.set(-edgeOffset, 0, showRight, height);
-//				break;
-//			case SILVER_MIDDLE:
-//				lightRect.set(showLeft, 0, showRight, height);
-//				break;
-//			case SILVER_RIGHT:
-//				lightRect.set(showLeft, 0, width + edgeOffset, height);
-//				break;
+			case SILVER_LEFT: // tablet profile tabs
+				darkRect.set(noLeft, showTop, showRight, showBottom);
+				lightRect.set(noLeft, showTop2, noRight, noBottom);
+				break;
+			case SILVER_MIDDLE:
+				darkRect.set(noLeft, showTop, showRight, showBottom);
+				lightRect.set(showLeft, showTop2, noRight, noBottom);
+				break;
+			case SILVER_RIGHT:
+				darkRect.set(noLeft, showTop, noRight, showBottom);
+				lightRect.set(showLeft, showTop2, noRight, noBottom);
+				break;
+
+			case RECT_GREY_LEFT: // diagram controls
+				darkRect.set(noLeft, noTop, showRight, noBottom);
+				lightRect.set(noLeft, noTop, noRight, noBottom);
+				buttonRect.set(edgeOffset / 3, noTop, width - edgeOffset / 3, height);
+				break;
+			case RECT_GREY_MIDDLE:
+				darkRect.set(noLeft, showTop, showRight, showBottom);
+				lightRect.set(showLeft, noTop, showRight, noBottom);
+				buttonRect.set(edgeOffset / 3, noTop, width - edgeOffset / 3, height);
+				break;
+			case RECT_GREY_RIGHT:
+				darkRect.set(noLeft, noTop, noRight, noBottom);
+				lightRect.set(noLeft, noTop, noRight, noBottom);
+				buttonRect.set(edgeOffset / 3, noTop, width - edgeOffset / 3, height);
+				break;
 		}
 
 		boundsInit = true;
