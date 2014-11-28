@@ -11,7 +11,6 @@ import android.os.Build;
 import android.util.AttributeSet;
 import com.example.roger.newdrawable.R;
 
-
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -122,6 +121,8 @@ public class ButtonDrawable extends StateListDrawable {
 	Paint topLinePaint;
 	Paint rightLinePaint;
 	Paint bottomLinePaint;
+	private int previousRight;
+	private int previousBottom;
 
 	/**
 	 * Use for init ButtonDrawableBuilder
@@ -203,13 +204,19 @@ public class ButtonDrawable extends StateListDrawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-//		canvas.getClipBounds(clipRect);
+		canvas.getClipBounds(clipBounds);
+		if (clipBounds.bottom != previousBottom  || clipBounds.right != previousRight) {
+			previousBottom = clipBounds.bottom;
+			previousRight = clipBounds.right;
+			boundsInit = false;
+			initialized = false;
+		}
 		if (!initialized) {
-			iniLayers(canvas);
+			iniLayers();
 		}
 
 		if (!boundsInit) {
-			initBounds(canvas);
+			initBounds();
 		}
 
 		topLinePaint.setColorFilter(currentFilter);
@@ -230,8 +237,7 @@ public class ButtonDrawable extends StateListDrawable {
 		canvas.drawRoundRect(buttonRect, radius, radius, buttonPaint);
 	}
 
-	private void initBounds(Canvas canvas) {
-		canvas.getClipBounds(clipBounds);
+	private void initBounds() {
 		int width = clipBounds.width();
 		int height = clipBounds.height();
 
@@ -254,9 +260,9 @@ public class ButtonDrawable extends StateListDrawable {
 		boundsInit = true;
 	}
 
-	void iniLayers(Canvas canvas) {
-		int width = canvas.getWidth();
-		int height = canvas.getHeight();
+	void iniLayers() {
+		int width = clipBounds.width();
+		int height = clipBounds.height();
 		if (!isSolid) {
 			buttonPaint.setShader(makeLinear(width, height, colorGradientStart, colorGradientCenter, colorGradientEnd));
 			if (usePressedLayer) {
