@@ -184,8 +184,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 		int showRight2 = width - edgeOffset / 2;
 		int showBottom = height - edgeOffset / 4;
 
-		buttonRect.set(noLeft, noTop, noRight, noBottom);
-
+		buttonRect.set(bevelSize / 2, bevelSize, width - bevelSize / 2, height - bevelSize / 2);
 
 		switch (rectPosition) {
 			case TOP_LEFT:
