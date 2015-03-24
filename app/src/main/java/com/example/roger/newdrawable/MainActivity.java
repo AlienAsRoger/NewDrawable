@@ -1,7 +1,7 @@
 package com.example.roger.newdrawable;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -12,6 +12,8 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main2);
+
+//		findViewById(R.id.top).setBackground(new DiscountDrawable(Color.BLUE));
 	}
 
 
